@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz - Conhecimentos Gerais</title>
+</head>
+<body>
+  <div class="container">
+    <h1>Quiz - Conhecimentos Gerais</h1>
+    <div id="quiz">
+      <div id="question"></div>
+      <div id="choices"></div>
+      <button id="submit">Submit</button>
+    </div>
+    <div id="results"></div>
+  </div>
+
+  <style>
+    body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+}
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+#quiz {
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+#question {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+#choices {
+  margin-bottom: 20px;
+}
+
+input[type="radio"] {
+  margin-right: 10px;
+}
+
+#submit {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#submit:hover {
+  background-color: #0056b3;
+}
+
+#results {
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 20px;
+}
+
+  </style>
+  
+  <script>
+    const questions = [
+  {
+    question: "Qual é a capital da França?",
+    choices: ["A) Roma", "B) Berlim", "C) Paris"],
+    correctAnswer: "C"
+  },
+  {
+    question: "Qual é o maior planeta do sistema solar?",
+    choices: ["A) Terra", "B) Júpiter", "C) Marte"],
+    correctAnswer: "B"
+  },
+  {
+    question: "Quem escreveu 'Dom Quixote'?",
+    choices: ["A) William Shakespeare", "B) Miguel de Cervantes", "C) Dante Alighieri"],
+    correctAnswer: "B"
+  }
+];
+
+const submitButton = document.getElementById('submit');
+const resultsContainer = document.getElementById('results');
+const questionContainer = document.getElementById('question');
+const choicesContainer = document.getElementById('choices');
+
+let currentQuestion = 0;
+let correctAnswers = 0;
+
+function displayQuestion() {
+  const q = questions[currentQuestion];
+  questionContainer.textContent = q.question;
+  choicesContainer.innerHTML = "";
+  for (let i = 0; i < q.choices.length; i++) {
+    const choice = document.createElement('input');
+    choice.type = 'radio';
+    choice.name = 'choice';
+    choice.value = String.fromCharCode(65 + i); // Convertendo 0, 1, 2 para A, B, C
+    choicesContainer.appendChild(choice);
+    choicesContainer.appendChild(document.createTextNode(q.choices[i]));
+    choicesContainer.appendChild(document.createElement('br'));
+  }
+}
+
+function showFinalResults() {
+  questionContainer.textContent = '';
+  choicesContainer.textContent = '';
+  submitButton.style.display = 'none';
+
+  resultsContainer.textContent = `Você acertou ${correctAnswers} de ${questions.length} questões.`;
+  if (correctAnswers === questions.length) {
+    resultsContainer.style.color = 'green';
+  } else {
+    resultsContainer.style.color = 'red';
+  }
+}
+
+submitButton.addEventListener('click', () => {
+  const selectedChoice = document.querySelector('input[name="choice"]:checked');
+  if (!selectedChoice) {
+    resultsContainer.textContent = 'Por favor, selecione uma resposta.';
+    return;
+  }
+  if (selectedChoice.value === questions[currentQuestion].correctAnswer) {
+    resultsContainer.textContent = 'Resposta correta!';
+    resultsContainer.style.color = 'green';
+    correctAnswers++;
+  } else {
+    resultsContainer.textContent = `Resposta incorreta. A resposta correta é ${questions[currentQuestion].correctAnswer}.`;
+    resultsContainer.style.color = 'red';
+  }
+  currentQuestion++;
+  if (currentQuestion < questions.length) {
+    displayQuestion();
+  } else {
+    showFinalResults();
+  }
+});
+
+displayQuestion();
+  </script>
+</body>
+</html>
